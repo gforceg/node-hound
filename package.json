@@ -1,0 +1,22 @@
+{
+  "author": "Michael Alexander <mail@michaelalexander.com.au> (http://michaelalexander.com.au)",
+  "name": "watchman",
+  "description": "Cross platform directory tree change watch.",
+  "version": "0.1.0",
+  "homepage": "https://beefsack.github.com/watchman",
+  "repository": {
+    "url": "https://github.com/beefsack/watchman.git"
+  },
+  "main": "watchman",
+  "scripts": {
+    "test": "node_modules/.bin/jasmine-node spec"
+  },
+  "dependencies": {},
+  "devDependencies": {
+    "jasmine-node": "*"
+  },
+  "optionalDependencies": {},
+  "engines": {
+    "node": "*"
+  }
+}
