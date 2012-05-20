@@ -32,42 +32,38 @@ WatchMan.prototype.watch = function(src, options) {
   stats = fs.statSync(src)
   if (stats.isDirectory()) {
     if (options.recurse) {
-      files = fs.readdirSync(src)
+      var files = fs.readdirSync(src)
       for (var i = 0, len = files.length; i < len; i++) {
         self.watch(src + '/' + files[i], options)
       }
     }
   }
-  // try {
-    self.watchers[src] = fs.watch(src, function(event, filename) {
-      if (path.existsSync(src)) {
-        stats = fs.statSync(src)
-        if (stats.isFile()) {
-          self.emit('change', src, stats)
-        } else if (stats.isDirectory()) {
-          // Check if the dir is new
-          if (self.watchers[src] === undefined) {
-            self.emit('create', src, stats)
-          }
-          // Check files to see if there are any new files
-          files = fs.readdirSync(src)
-          for (var i = 0, len = files.length; i < len; i++) {
-            var file = src + '/' + files[i]
-            if (self.watchers[file] === undefined) {
-              self.emit('create', file, fs.statSync(file))
-              self.watch(file, options)
-            }
+  self.watchers[src] = fs.watch(src, function(event, filename) {
+    if (path.existsSync(src)) {
+      stats = fs.statSync(src)
+      if (stats.isFile()) {
+        self.emit('change', src, stats)
+      } else if (stats.isDirectory()) {
+        // Check if the dir is new
+        if (self.watchers[src] === undefined) {
+          self.emit('create', src, stats)
+        }
+        // Check files to see if there are any new files
+        var dirFiles = fs.readdirSync(src)
+        for (var i = 0, len = dirFiles.length; i < len; i++) {
+          var file = src + '/' + dirFiles[i]
+          if (self.watchers[file] === undefined) {
+            self.watch(file, options)
+            self.emit('create', file, fs.statSync(file))
           }
         }
-      } else {
-        self.emit('delete', src)            
       }
-    })
-    self.emit('watch', src)    
-  // } catch (e) {
-  //   // Ignore non existent errors
-  //   if (e.code != 'ENOENT') throw(e)
-  // }
+    } else {
+      self.unwatch(src)
+      self.emit('delete', src)
+    }
+  })
+  self.emit('watch', src)    
 }
 
 WatchMan.prototype.unwatch = function(src, options) {

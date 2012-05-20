@@ -111,20 +111,45 @@ describe('WatchMan', function() {
     watcher = watchMan.watch(file)
     watcher.on('delete', function(src) {
       expect(src).toBe(file)
+      expect(watcher.watchers[src]).toBeUndefined()
       done()
     })
     fs.unlink(file)
   })
 
   it('can detect a new file in a dir', function(done) {
-    var watchDir = testDir
-      , newFile = testDir + '/new file.js'
-      , watchedFiles = 0
-    watcher = watchMan.watch(watchDir)
+    var newFile = testDir + '/new file.js'
+    watcher = watchMan.watch(testDir)
     watcher.on('create', function(src) {
       expect(src).toBe(newFile)
       done()
     })
     fs.writeFile(newFile, 'blah blah blah')
+  })
+
+  it('can detect a deleted file in a dir', function(done) {
+    var file = testDir + '/subdir 1/subdir file 1.js'
+    watcher = watchMan.watch(testDir)
+    watcher.on('delete', function(src) {
+      expect(src).toBe(file)
+      expect(watcher.watchers[src]).toBeUndefined()
+      done()
+    })
+    fs.unlink(file)
+  })
+
+  it('can detect a new file in a new dir', function(done) {
+    var dir = testDir + '/new dir'
+      , file = dir + '/new dir file.js'
+    watcher = watchMan.watch(testDir)
+    watcher.once('create', function(src) {
+      expect(src).toBe(dir)
+      watcher.once('create', function(src) {
+        expect(src).toBe(file)
+        done()
+      })
+      fs.writeFile(file, 'bofbajojsa')
+    })
+    fs.mkdirSync(dir)
   })
 })
