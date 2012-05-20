@@ -1,15 +1,15 @@
-watchman - directory tree watcher for node.js
+hound - directory tree watcher for node.js
 =============================================
 
 Cross platform directory tree watcher that works, even on Windows
 -----------------------------------------------------------------
 
 I've recently started some node.js projects, and have been very unhappy with the
-results.  Many work well, but aren't cross platform.  watchman was written to
+results.  Many work well, but aren't cross platform.  hound was written to
 create a simple directory tree watcher, with lots of tests, that actually works.
 Even on Windows.
 
-watchman is designed to be very simple, fast and reliable.
+hound is designed to be very simple, fast and reliable.
 
 Installation
 ------------
@@ -17,20 +17,20 @@ Installation
 Install using npm:
 
 ```
-npm install watchman
+npm install hound
 ```
 
 Usage
 -----
 
 ```javascript
-watchman = require('watchman')
+hound = require('hound')
 
 // Create a directory tree watcher
-watcher = watchman.watch('/tmp')
+watcher = hound.watch('/tmp')
 
 // Create a file watcher
-watcher = watchman.watch('/tmp/file.txt')
+watcher = hound.watch('/tmp/file.txt')
 
 // Add callbacks for file and directory events
 watcher.on('create', function(file, stats) {

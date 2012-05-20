@@ -1,4 +1,4 @@
-var watchMan = require('../watchman')
+var hound = require('../hound')
   , fs = require('fs')
   , path = require('path')
   , util = require('util')
@@ -45,7 +45,7 @@ function copyFile(src, dest) {
   }
 }
 
-describe('WatchMan', function() {
+describe('Hound', function() {
   /**
    * Initialise test area with files.
    */
@@ -66,17 +66,17 @@ describe('WatchMan', function() {
 
   it('can watch a file', function() {
     var file = testDir + '/file 1.js'
-    watcher = watchMan.watch(file)
+    watcher = hound.watch(file)
     expect(watcher.watchers[file]).toBeDefined()
   })
 
   it('can watch a directory', function() {
-    watcher = watchMan.watch(testDir, {recurse: false})
+    watcher = hound.watch(testDir, {recurse: false})
     expect(watcher.watchers[testDir]).toBeDefined()
   })
 
   it('can watch a directory tree', function() {
-    watcher = watchMan.watch(testDir)
+    watcher = hound.watch(testDir)
     var watcherCount = 0
     for (var i in watcher.watchers) {
       watcherCount++
@@ -86,7 +86,7 @@ describe('WatchMan', function() {
 
   it('can unwatch a file', function(done) {
     var file = testDir + '/file 1.js'
-    watcher = watchMan.watch(file)
+    watcher = hound.watch(file)
     watcher.on('unwatch', function(src) {
       expect(src).toBe(file)
       expect(watcher.watchers.length).toBe(0)
@@ -98,7 +98,7 @@ describe('WatchMan', function() {
   it('can detect a change in a file when watching directly', function(done) {
     var file = testDir + '/subdir 1/subdir file 1.js'  
     var watchCount = 0
-    watcher = watchMan.watch(file)
+    watcher = hound.watch(file)
     watcher.on('change', function(src) {
       expect(src).toBe(file)
       done()
@@ -108,7 +108,7 @@ describe('WatchMan', function() {
 
   it('can detect deletion of a file when watching directly', function(done) {
     var file = testDir + '/subdir 1/subdir file 1.js'    
-    watcher = watchMan.watch(file)
+    watcher = hound.watch(file)
     watcher.on('delete', function(src) {
       expect(src).toBe(file)
       expect(watcher.watchers[src]).toBeUndefined()
@@ -119,7 +119,7 @@ describe('WatchMan', function() {
 
   it('can detect a new file in a dir', function(done) {
     var newFile = testDir + '/new file.js'
-    watcher = watchMan.watch(testDir)
+    watcher = hound.watch(testDir)
     watcher.on('create', function(src) {
       expect(src).toBe(newFile)
       done()
@@ -129,7 +129,7 @@ describe('WatchMan', function() {
 
   it('can detect a deleted file in a dir', function(done) {
     var file = testDir + '/subdir 1/subdir file 1.js'
-    watcher = watchMan.watch(testDir)
+    watcher = hound.watch(testDir)
     watcher.on('delete', function(src) {
       expect(src).toBe(file)
       expect(watcher.watchers[src]).toBeUndefined()
@@ -141,7 +141,7 @@ describe('WatchMan', function() {
   it('can detect a new file in a new dir', function(done) {
     var dir = testDir + '/new dir'
       , file = dir + '/new dir file.js'
-    watcher = watchMan.watch(testDir)
+    watcher = hound.watch(testDir)
     watcher.once('create', function(src) {
       expect(src).toBe(dir)
       watcher.once('create', function(src) {

@@ -6,22 +6,22 @@ var fs = require('fs')
 /**
  * Watch one or more files or directories for changes.
  * @param {string|array} src The file or directory to watch.
- * @return {WatchMan}
+ * @return {Hound}
  */
 exports.watch = function(src) {
-  watcher = new WatchMan()
+  watcher = new Hound()
   watcher.watch(src)
   return watcher
 }
 
 /**
- * The WatchMan class tracks watchers and changes and emits events.
+ * The Hound class tracks watchers and changes and emits events.
  */
-function WatchMan() {
+function Hound() {
   events.EventEmitter.call(this)
 }
-util.inherits(WatchMan, events.EventEmitter)
-WatchMan.prototype.watchers = []
+util.inherits(Hound, events.EventEmitter)
+Hound.prototype.watchers = []
 
 /**
  * Watch a file or directory tree for changes, and fire events when they happen.
@@ -30,9 +30,9 @@ WatchMan.prototype.watchers = []
  * 'change' (file, stats)
  * 'delete' (file)
  * @param {string} src
- * @return {WatchMan}
+ * @return {Hound}
  */
-WatchMan.prototype.watch = function(src) {
+Hound.prototype.watch = function(src) {
   var self = this
   stats = fs.statSync(src)
   if (stats.isDirectory()) {
@@ -73,7 +73,7 @@ WatchMan.prototype.watch = function(src) {
  * Unwatch a file or directory tree.
  * @param {string} src
  */
-WatchMan.prototype.unwatch = function(src) {
+Hound.prototype.unwatch = function(src) {
   var self = this
   if (self.watchers[src] !== undefined) {
     self.watchers[src].close()
@@ -85,7 +85,7 @@ WatchMan.prototype.unwatch = function(src) {
 /**
  * Unwatch all currently watched files and directories in this watcher.
  */
-WatchMan.prototype.clear = function() {
+Hound.prototype.clear = function() {
   var self = this
   for (var file in this.watchers) {
     self.unwatch(file)
