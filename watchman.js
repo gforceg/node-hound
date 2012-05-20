@@ -6,12 +6,11 @@ var fs = require('fs')
 /**
  * Watch one or more files or directories for changes.
  * @param {string|array} src The file or directory to watch.
- * @param {bool} options[recursive] (true) Whether to recurse directories
  * @return {WatchMan}
  */
-exports.watch = function(src, options) {
+exports.watch = function(src) {
   watcher = new WatchMan()
-  watcher.watch(src, options)
+  watcher.watch(src)
   return watcher
 }
 
@@ -22,20 +21,24 @@ function WatchMan() {
   events.EventEmitter.call(this)
 }
 util.inherits(WatchMan, events.EventEmitter)
-
 WatchMan.prototype.watchers = []
 
-WatchMan.prototype.watch = function(src, options) {
+/**
+ * Watch a file or directory tree for changes, and fire events when they happen.
+ * Fires the following events:
+ * 'create' (file, stats)
+ * 'change' (file, stats)
+ * 'delete' (file)
+ * @param {string} src
+ * @return {WatchMan}
+ */
+WatchMan.prototype.watch = function(src) {
   var self = this
-  if (options === undefined) options = {}
-  if (options.recurse === undefined) options.recurse = true
   stats = fs.statSync(src)
   if (stats.isDirectory()) {
-    if (options.recurse) {
-      var files = fs.readdirSync(src)
-      for (var i = 0, len = files.length; i < len; i++) {
-        self.watch(src + '/' + files[i], options)
-      }
+    var files = fs.readdirSync(src)
+    for (var i = 0, len = files.length; i < len; i++) {
+      self.watch(src + '/' + files[i])
     }
   }
   self.watchers[src] = fs.watch(src, function(event, filename) {
@@ -53,7 +56,7 @@ WatchMan.prototype.watch = function(src, options) {
         for (var i = 0, len = dirFiles.length; i < len; i++) {
           var file = src + '/' + dirFiles[i]
           if (self.watchers[file] === undefined) {
-            self.watch(file, options)
+            self.watch(file)
             self.emit('create', file, fs.statSync(file))
           }
         }
@@ -66,10 +69,12 @@ WatchMan.prototype.watch = function(src, options) {
   self.emit('watch', src)    
 }
 
-WatchMan.prototype.unwatch = function(src, options) {
+/**
+ * Unwatch a file or directory tree.
+ * @param {string} src
+ */
+WatchMan.prototype.unwatch = function(src) {
   var self = this
-  if (options === undefined) options = {}
-  if (options.recurse === undefined) options.recurse = true
   if (self.watchers[src] !== undefined) {
     self.watchers[src].close()
     delete self.watchers[src]
@@ -77,6 +82,9 @@ WatchMan.prototype.unwatch = function(src, options) {
   self.emit('unwatch', src)
 }
 
+/**
+ * Unwatch all currently watched files and directories in this watcher.
+ */
 WatchMan.prototype.clear = function() {
   var self = this
   for (var file in this.watchers) {
