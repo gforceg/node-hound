@@ -4,12 +4,13 @@ hound - directory tree watcher for node.js
 Cross platform directory tree watcher that works, even on Windows
 -----------------------------------------------------------------
 
-I've recently started some node.js projects, and have been very unhappy with the
-results.  Many work well, but aren't cross platform.  hound was written to
-create a simple directory tree watcher, with lots of tests, that actually works.
-Even on Windows.
+The philosophy of hound is:
 
-hound is designed to be very simple, fast and reliable.  There are no runtime
+* **Be reliable, work on every platform**
+* **Be fast**
+* **Be simple**
+
+hound is designed to be very reliable, fast, and simple.  There are no runtime
 dependencies outside of the standard node.js libraries.  There is a development
 dependency on [Jasmine](http://pivotal.github.com/jasmine/), which is required
 to run the tests.
