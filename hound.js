@@ -9,7 +9,7 @@ var fs = require('fs')
  * @return {Hound}
  */
 exports.watch = function(src) {
-  watcher = new Hound()
+  var watcher = new Hound()
   watcher.watch(src)
   return watcher
 }
@@ -34,7 +34,7 @@ Hound.prototype.watchers = []
  */
 Hound.prototype.watch = function(src) {
   var self = this
-  stats = fs.statSync(src)
+  var stats = fs.statSync(src)
   if (stats.isDirectory()) {
     var files = fs.readdirSync(src)
     for (var i = 0, len = files.length; i < len; i++) {
