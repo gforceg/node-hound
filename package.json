@@ -1,9 +1,9 @@
 {
   "author": "Michael Alexander <mail@michaelalexander.com.au> (http://michaelalexander.com.au)",
   "name": "hound",
-  "description": "Cross platform directory tree watcher that works, even on Windows.",
-  "keywords": ["directory", "tree", "watch", "windows", "cross", "platform"],
-  "version": "1.0.1",
+  "description": "Cross platform directory tree watcher, focussed on reliability, speed, and simplicity.",
+  "keywords": ["directory", "tree", "watch", "windows", "cross", "platform", "reliable", "simple", "fast"],
+  "version": "1.0.2",
   "homepage": "https://github.com/beefsack/node-hound",
   "bugs": "https://github.com/beefsack/node-hound/issues",
   "repository": {

@@ -24,19 +24,23 @@ Install using npm:
 npm install hound
 ```
 
+Because hound has no runtime dependencies, it is also possible to download the
+library manually and require it directly.
+
 Usage
 -----
 
 ```javascript
 hound = require('hound')
 
-// Create a directory tree watcher
+// Create a directory tree watcher.
 watcher = hound.watch('/tmp')
 
-// Create a file watcher
+// Create a file watcher.
 watcher = hound.watch('/tmp/file.txt')
 
-// Add callbacks for file and directory events
+// Add callbacks for file and directory events.  The change event only applies
+// to files.
 watcher.on('create', function(file, stats) {
   console.log(file + ' was created')
 })
@@ -47,10 +51,10 @@ watcher.on('delete', function(file) {
   console.log(file + ' was deleted')
 })
 
-// Unwatch specific files or directories
+// Unwatch specific files or directories.
 watcher.unwatch('/tmp/another_file')
 
-// Unwatch all watched files and directories
+// Unwatch all watched files and directories.
 watcher.clear()
 ```
 
