@@ -9,7 +9,10 @@ results.  Many work well, but aren't cross platform.  hound was written to
 create a simple directory tree watcher, with lots of tests, that actually works.
 Even on Windows.
 
-hound is designed to be very simple, fast and reliable.
+hound is designed to be very simple, fast and reliable.  There are no runtime
+dependencies outside of the standard node.js libraries.  There is a development
+dependency on [Jasmine](http://pivotal.github.com/jasmine/), which is required
+to run the tests.
 
 Installation
 ------------
@@ -49,3 +52,21 @@ watcher.unwatch('/tmp/another_file')
 // Unwatch all watched files and directories
 watcher.clear()
 ```
+
+Testing
+-------
+
+To run the tests using your global Jasmine binary:
+
+```
+jasmine-node spec
+```
+
+To run the tests using your local Jasmine binary in node_modules:
+
+```
+node_modules/.bin/jasmine-node spec
+```
+
+The tests work on actual directory trees that are generated in the tmp
+directory.
