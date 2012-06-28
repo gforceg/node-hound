@@ -61,11 +61,5 @@ watcher.clear()
 Testing
 -------
 
-To run the tests:
-
-```
-npm test
-```
-
-The tests work on actual directory trees that are generated in the tmp
-directory.
+To run the tests, use `npm test`.  The tests work on actual directory trees that
+are generated in the tmp directory.
