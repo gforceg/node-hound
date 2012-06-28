@@ -61,16 +61,10 @@ watcher.clear()
 Testing
 -------
 
-To run the tests using your global Jasmine binary:
+To run the tests:
 
 ```
-jasmine-node spec
-```
-
-To run the tests using your local Jasmine binary in node_modules:
-
-```
-node_modules/.bin/jasmine-node spec
+npm test
 ```
 
 The tests work on actual directory trees that are generated in the tmp
