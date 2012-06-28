@@ -35,6 +35,7 @@ Hound.prototype.watchers = []
 Hound.prototype.watch = function(src) {
   var self = this
   var stats = fs.statSync(src)
+  var lastChange = null
   if (stats.isDirectory()) {
     var files = fs.readdirSync(src)
     for (var i = 0, len = files.length; i < len; i++) {
@@ -45,7 +46,9 @@ Hound.prototype.watch = function(src) {
     if (fs.existsSync(src)) {
       stats = fs.statSync(src)
       if (stats.isFile()) {
-        self.emit('change', src, stats)
+        if (lastChange === null || stats.mtime.getTime() > lastChange)
+          self.emit('change', src, stats)
+        lastChange = stats.mtime.getTime()
       } else if (stats.isDirectory()) {
         // Check if the dir is new
         if (self.watchers[src] === undefined) {

@@ -97,7 +97,6 @@ describe('Hound', function() {
 
   it('can detect a change in a file when watching directly', function(done) {
     var file = testDir + '/subdir 1/subdir file 1.js'  
-    var watchCount = 0
     watcher = hound.watch(file)
     watcher.on('change', function(src) {
       expect(src).toBe(file)
@@ -151,5 +150,38 @@ describe('Hound', function() {
       fs.writeFile(file, 'bofbajojsa')
     })
     fs.mkdirSync(dir)
+  })
+
+  it('shouldn\'t raise two events for one create', function(done) {
+    var file = testDir + '/subdir 1/subdir file 5.js'  
+    var createCount = 0
+    watcher = hound.watch(testDir)
+    watcher.on('create', function(src) {
+      expect(++createCount).toBeLessThan(2)
+      setTimeout(done, 500)
+    })
+    fs.writeFile(file, 'blah blah new data blah')
+  })
+
+  it('shouldn\'t raise two events for one change', function(done) {
+    var file = testDir + '/subdir 1/subdir file 1.js'  
+    var changeCount = 0
+    watcher = hound.watch(testDir)
+    watcher.on('change', function(src) {
+      expect(++changeCount).toBeLessThan(2)
+      setTimeout(done, 500)
+    })
+    fs.writeFile(file, 'blah blah new data blah')
+  })
+
+  it('shouldn\'t raise two events for one delete', function(done) {
+    var file = testDir + '/subdir 1/subdir file 1.js'  
+    var deleteCount = 0
+    watcher = hound.watch(testDir)
+    watcher.on('delete', function(src) {
+      expect(++deleteCount).toBeLessThan(2)
+      setTimeout(done, 500)
+    })
+    fs.unlink(file)
   })
 })
