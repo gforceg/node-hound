@@ -12,7 +12,7 @@ var testSource = path.normalize(__dirname + '/data')
  * @param {string} src
  */
 function deleteFile(src) {
-  if (!path.existsSync(src)) return
+  if (!fs.existsSync(src)) return
   var stat = fs.statSync(src)
   // if (stat === undefined) return
   if (stat.isDirectory()) {
@@ -33,13 +33,13 @@ function deleteFile(src) {
 function copyFile(src, dest) {
   stat = fs.statSync(src)
   if (stat.isDirectory()) {
-    if (!path.existsSync(dest)) fs.mkdirSync(dest)
+    if (!fs.existsSync(dest)) fs.mkdirSync(dest)
     var files = fs.readdirSync(src)
     for (var i = 0, len = files.length; i < len; i++) {
       copyFile(src + '/' + files[i], dest + '/' + files[i])
     }    
   } else {
-    if (!path.existsSync(dest)) {
+    if (!fs.existsSync(dest)) {
       util.pump(fs.createReadStream(src), fs.createWriteStream(dest))
     }
   }

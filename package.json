@@ -3,7 +3,7 @@
   "name": "hound",
   "description": "Cross platform directory tree watcher, focussed on reliability, speed, and simplicity.",
   "keywords": ["directory", "tree", "watch", "windows", "cross", "platform", "reliable", "simple", "fast"],
-  "version": "1.0.2",
+  "version": "1.0.3",
   "homepage": "https://github.com/beefsack/node-hound",
   "bugs": "https://github.com/beefsack/node-hound/issues",
   "repository": {
@@ -20,6 +20,6 @@
   },
   "optionalDependencies": {},
   "engines": {
-    "node": "*"
+    "node": ">=0.7.1"
   }
 }

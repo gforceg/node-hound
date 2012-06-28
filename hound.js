@@ -42,7 +42,7 @@ Hound.prototype.watch = function(src) {
     }
   }
   self.watchers[src] = fs.watch(src, function(event, filename) {
-    if (path.existsSync(src)) {
+    if (fs.existsSync(src)) {
       stats = fs.statSync(src)
       if (stats.isFile()) {
         self.emit('change', src, stats)
