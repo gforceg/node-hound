@@ -5,11 +5,16 @@ var fs = require('fs')
 
 /**
  * Watch one or more files or directories for changes.
+ *
+ * Options:
+ *   - watchFn: Specify a custom filesystem watch function (eg: `fs.watchFile`)
+ *
  * @param {string|array} src The file or directory to watch.
+ * @param {array} options
  * @return {Hound}
  */
-exports.watch = function(src) {
-  var watcher = new Hound()
+exports.watch = function(src, options) {
+  var watcher = new Hound(options)
   watcher.watch(src)
   return watcher
 }
@@ -17,8 +22,9 @@ exports.watch = function(src) {
 /**
  * The Hound class tracks watchers and changes and emits events.
  */
-function Hound() {
+function Hound(options) {
   events.EventEmitter.call(this)
+  this.options = options || {}
 }
 util.inherits(Hound, events.EventEmitter)
 Hound.prototype.watchers = []
@@ -36,13 +42,14 @@ Hound.prototype.watch = function(src) {
   var self = this
   var stats = fs.statSync(src)
   var lastChange = null
+  var watchFn = self.options.watchFn || fs.watch
   if (stats.isDirectory()) {
     var files = fs.readdirSync(src)
     for (var i = 0, len = files.length; i < len; i++) {
       self.watch(src + '/' + files[i])
     }
   }
-  self.watchers[src] = fs.watch(src, function(event, filename) {
+  self.watchers[src] = watchFn(src, function(event, filename) {
     if (fs.existsSync(src)) {
       stats = fs.statSync(src)
       if (stats.isFile()) {

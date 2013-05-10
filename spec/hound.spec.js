@@ -152,6 +152,14 @@ describe('Hound', function() {
     fs.mkdirSync(dir)
   })
 
+  it('can specify custom watch function', function() {
+    var file = testDir + '/file 1.js'
+      , works = false
+      , watchFn = function(src) { works = src }
+    watcher = hound.watch(file, {watchFn: watchFn})
+    expect(works).toBe(file)
+  })
+
   it('shouldn\'t raise two events for one create', function(done) {
     var file = testDir + '/subdir 1/subdir file 5.js'  
     var createCount = 0
