@@ -46,7 +46,7 @@ Hound.prototype.watch = function(src) {
   if (stats.isDirectory()) {
     var files = fs.readdirSync(src)
     for (var i = 0, len = files.length; i < len; i++) {
-      self.watch(src + '/' + files[i])
+      self.watch(src + path.sep + files[i])
     }
   }
   self.watchers[src] = watchFn(src, function(event, filename) {
@@ -64,7 +64,7 @@ Hound.prototype.watch = function(src) {
         // Check files to see if there are any new files
         var dirFiles = fs.readdirSync(src)
         for (var i = 0, len = dirFiles.length; i < len; i++) {
-          var file = src + '/' + dirFiles[i]
+          var file = src + path.sep + dirFiles[i]
           if (self.watchers[file] === undefined) {
             self.watch(file)
             self.emit('create', file, fs.statSync(file))
