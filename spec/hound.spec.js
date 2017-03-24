@@ -12,13 +12,14 @@ var testSource = path.normalize(__dirname + '/data')
  * @param {string} src
  */
 function deleteFile(src) {
+  if (path.sep == '\\') src = src.replace(' ', path.sep + ' ')
   if (!fs.existsSync(src)) return
   var stat = fs.statSync(src)
   // if (stat === undefined) return
   if (stat.isDirectory()) {
     var files = fs.readdirSync(src)
     for (var i = 0, len = files.length; i < len; i++) {
-      deleteFile(src + '/' + files[i])
+      deleteFile(src + path.sep + files[i])
     }
     fs.rmdirSync(src)
   } else {
@@ -36,11 +37,12 @@ function copyFile(src, dest) {
     if (!fs.existsSync(dest)) fs.mkdirSync(dest)
     var files = fs.readdirSync(src)
     for (var i = 0, len = files.length; i < len; i++) {
-      copyFile(src + '/' + files[i], dest + '/' + files[i])
+      copyFile(src + path.sep + files[i], dest + path.sep + files[i])
     }    
   } else {
     if (!fs.existsSync(dest)) {
-      util.pump(fs.createReadStream(src), fs.createWriteStream(dest))
+      // util.pump(fs.createReadStream(src), fs.createWriteStream(dest))
+      fs.createReadStream(src).pipe(fs.createWriteStream(dest))
     }
   }
 }
@@ -54,6 +56,7 @@ describe('Hound', function() {
     copyFile(testSource, testDir)
   })
 
+let watcher;
   /**
    * Remove any watchers.
    */
