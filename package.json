@@ -4,11 +4,11 @@
   "description": "Cross platform directory tree watcher, focussed on reliability, speed, and simplicity.",
   "keywords": ["directory", "tree", "watch", "windows", "cross", "platform", "reliable", "simple", "fast"],
   "version": "1.0.5",
-  "homepage": "https://github.com/beefsack/node-hound",
-  "bugs": "https://github.com/beefsack/node-hound/issues",
+  "homepage": "https://github.com/gforceg/node-hound",
+  "bugs": "https://github.com/gforceg/node-hound/issues",
   "repository": {
     "type": "git",
-    "url": "git://github.com/beefsack/node-hound.git"
+    "url": "git://github.com/gforceg/node-hound.git"
   },
   "main": "hound",
   "scripts": {
