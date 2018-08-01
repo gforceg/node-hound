@@ -12,7 +12,7 @@ The philosophy of hound is:
 
 hound is designed to be very reliable, fast, and simple.  There are no runtime
 dependencies outside of the standard node.js libraries.  There is a development
-dependency on [Jasmine](http://pivotal.github.com/jasmine/), which is required
+dependency on [Jasmine](https://jasmine.github.io/), which is required
 to run the tests.
 
 Installation
